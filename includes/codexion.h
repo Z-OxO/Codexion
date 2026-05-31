@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/05/31 19:45:19 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/05/31 20:00:10 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CODEXION_H
 
 # include "../includes/parsing.h"
+# include <stdlib.h>
 # include <pthread.h>
 
 typedef struct s_sim	t_sim;
