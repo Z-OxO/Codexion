@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:04 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/05/29 07:11:10 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/05/31 19:49:07 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	print_error(t_parsing_errors err)
 
 	if (err > OK && err <= IMPOSSIBLE_TIMING)
 		write(2, msg[err], strlen(msg[err]));
-	return (1); 
+	return (1);
 }
 
 static t_parsing_errors	string_to_ul(const char *str, unsigned long *ret_ptr)
@@ -79,9 +79,9 @@ t_parsing_errors	parse_args(const int argc, const char **argv, t_args *args)
 
 	if (argc != 9)
 		return (INVALID_ARGUMENTS_NB);
-	converted_args = (unsigned long *)args;
+	converted_args = (unsigned long *)args; // Cast to use continuous memory
 	i = 0;
-	argv++; // Skip program name.
+	argv++; // Skip program name
 	while (i < 7)
 	{
 		ret = string_to_ul(argv[i], &converted_args[i]);
