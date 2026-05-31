@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 19:43:45 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/05/31 21:28:32 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/05/31 22:07:08 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	clean_sim(t_sim *sim)
 	if (!sim)
 		return ;
 	i = 0;
-	while (i < sim->args.nb_coders)
+	while (i < sim->args->nb_coders)
 	{
 		if (sim->coder_wake)
 			pthread_cond_destroy(&sim->coder_wake[i]);
@@ -33,19 +33,20 @@ void	clean_sim(t_sim *sim)
 }
 static int	allocate_arrays(t_sim *sim)
 {
-	sim->coders = malloc(sizeof(t_coder) * sim->args.nb_coders);
-	sim->coder_wake = malloc(sizeof(pthread_cond_t) * sim->args.nb_coders);
+	sim->coders = malloc(sizeof(t_coder) * sim->args->nb_coders);
+	sim->coder_wake = malloc(sizeof(pthread_cond_t) * sim->args->nb_coders);
 	if (!sim->coders || !sim->coder_wake)
 		return (0); // Simplify init_sim condition | 0 error 1 succes
 	return (1);
 }
 
-int	init_sim(t_sim *sim)
+int	init_sim(t_sim *sim, t_args *args)
 {
 	unsigned int	i;
 
-	if (!sim)
+	if (!sim || !args)
 		return (1);
+	sim->args = args;
 	if (!allocate_arrays(sim))
 	{
 		clean_sim(sim);
@@ -55,12 +56,12 @@ int	init_sim(t_sim *sim)
 	pthread_mutex_init(&sim->log_mutex, NULL);
 	pthread_cond_init(&sim->sched_wake, NULL);
 	pthread_cond_init(&sim->mon_cond, NULL);
-	memset(sim->coders, 0, sizeof(t_coder) * sim->args.nb_coders);
+	memset(sim->coders, 0, sizeof(t_coder) * sim->args->nb_coders);
 	i = 0;
-	while (i < sim->args.nb_coders)
+	while (i < sim->args->nb_coders)
 	{
 		pthread_cond_init(&sim->coder_wake[i], NULL);
-		sim->coders[i].id = i + 1;
+		sim->coders[i].id = i + 1; // Start at 1
 		sim->coders[i].sim = sim;
 		i++;
 	}

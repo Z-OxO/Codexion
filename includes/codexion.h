@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/05/31 20:00:10 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/05/31 21:45:05 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define CODEXION_H
 
 # include "../includes/parsing.h"
-# include <stdlib.h>
 # include <pthread.h>
+# include <stdlib.h>
 
 typedef struct s_sim	t_sim;
 
@@ -44,7 +44,7 @@ typedef struct s_coder
 
 typedef struct s_sim
 {
-	struct s_args		args;
+	struct s_args		*args;
 
 	bool				stop;
 	unsigned long long	sim_start;
@@ -53,11 +53,15 @@ typedef struct s_sim
 	pthread_cond_t		*coder_wake;
 
 	pthread_mutex_t		lock;
-	pthread_mutex_t		log_mutex; // USE WRITE ?
+	pthread_mutex_t log_mutex; // USE WRITE ?
 
 	pthread_cond_t		sched_wake;
 	pthread_cond_t		mon_cond;
 
 }						t_sim;
+
+// INIT.C
+void					clean_sim(t_sim *sim);
+int						init_sim(t_sim *sim, t_args *args);
 
 #endif
