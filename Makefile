@@ -14,26 +14,32 @@ DEPS        = $(OBJS:.o=.d)
 
 RM          = rm -rf
 
+GREEN       = \033[32m
+BLUE        = \033[34m
+YELLOW      = \033[33m
+RED         = \033[31m
+RESET       = \033[0m
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo "\033[32m✓ $(NAME) created.\033[0m"
+	@echo "$(GREEN)✓ $(NAME) created.$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@echo "\033[34m▶ Compiling $<...\033[0m"
+	@echo "$(BLUE)▶ Compiling $<...$(RESET)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 -include $(DEPS)
 
 clean:
 	@$(RM) $(OBJ_DIR)
-	@echo "\033[33m✕ Objects removed.\033[0m"
+	@echo "$(YELLOW)✕ Objects removed.$(RESET)"
 
 fclean: clean
 	@$(RM) $(NAME)
-	@echo "\033[31m✕ Binary removed.\033[0m"
+	@echo "$(RED)✕ Binary removed.$(RESET)"
 
 re: fclean all
 
