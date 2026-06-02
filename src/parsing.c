@@ -6,16 +6,11 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:04 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 14:31:52 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/02 16:56:02 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-static bool	is_num(char c)
-{
-	return (c >= '0' && c <= '9');
-}
 
 static bool	is_possible_timings(const t_args *args)
 {
@@ -32,6 +27,7 @@ int	print_error(t_parsing_errors err)
 	static const char	*msg[] = {"",
 			"Error: Internal NULL pointer detected.\n",
 			"Parsing Error: Invalid number of arguments.\n",
+			"Parsing Error: Invalid number of coder (at least 2).\n",
 			"Parsing Error: Scheduler must be 'fifo' or 'edf'.\n",
 			"Parsing Error: Empty argument provided.\n",
 			"Parsing Error: Arguments must strictly be numeric.\n",
@@ -59,7 +55,7 @@ static t_parsing_errors	string_to_ul(const char *str, unsigned long *ret_ptr)
 		return (NEGATIVE_NB);
 	while (str[i])
 	{
-		if (!is_num(str[i]))
+		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (NOT_NUMERIC);
 		nb *= 10;
 		nb += str[i] - '0';
@@ -71,6 +67,17 @@ static t_parsing_errors	string_to_ul(const char *str, unsigned long *ret_ptr)
 	return (OK);
 }
 
+static t_parsing_errors	parse_scheduler(const char *str, t_args *args)
+{
+	if (strcmp(str, "fifo") == 0)
+		args->scheduler_type = FIFO;
+	else if (strcmp(str, "edf") == 0)
+		args->scheduler_type = EDF;
+	else
+		return (INVALID_SCHEDULER);
+	return (OK);
+}
+
 t_parsing_errors	parse_args(const int argc, const char **argv, t_args *args)
 {
 	unsigned long		*converted_args;
@@ -79,23 +86,20 @@ t_parsing_errors	parse_args(const int argc, const char **argv, t_args *args)
 
 	if (argc != 9)
 		return (INVALID_ARGUMENTS_NB);
-	converted_args = (unsigned long *)args; // Cast to use continuous memory
-	i = 0;
-	argv++; // Skip program name
+	converted_args = (unsigned long *)args;
+	i = -1;
 	while (i < 7)
 	{
-		ret = string_to_ul(argv[i], &converted_args[i]);
+		ret = string_to_ul(argv[i + 1], &converted_args[i]);
 		if (ret != OK)
 			return (ret);
 		i++;
 	}
-	if (strcmp(argv[7], "fifo") == 0)
-		args->scheduler_type = FIFO;
-	else if (strcmp(argv[7], "edf") == 0)
-		args->scheduler_type = EDF;
-	else
+	if (parse_scheduler(argv[8], args) != OK)
 		return (INVALID_SCHEDULER);
 	if (!is_possible_timings(args))
 		return (IMPOSSIBLE_TIMING);
+	if (args->nb_coders < 2)
+		return (INVALID_CODERS_NB);
 	return (OK);
 }
