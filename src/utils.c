@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 02:20:56 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 19:53:11 by jbenhass         ###   ########lyon.fr   */
+/*   Created: 2026/06/02 19:09:38 by jbenhass          #+#    #+#             */
+/*   Updated: 2026/06/02 19:55:49 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	main(int argc, const char **argv)
+unsigned long long get_ms(unsigned long long sim_start)
 {
-	t_args				args;
-	t_parsing_errors	err;
-	t_sim				sim;
+	unsigned long long	t;
+	struct timeval 		time;
 
-	err = parse_args(argc, argv, &args);
-	if (err != OK)
-		return (print_error(err));
-	init_sim(&sim, &args);
-	sim.sim_start = get_ms(0);
-	printf("%llu\n", get_ms(sim.sim_start));
-	usleep(11000);
-	printf("%llu\n", get_ms(sim.sim_start));
-	return (OK);
+	gettimeofday(&time, NULL);
+	t = time.tv_sec * 1000 + time.tv_usec / 1000;
+	return (t - sim_start);
 }

@@ -1,13 +1,13 @@
 NAME        = codexion
 
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror -I$(INC_DIR) -MMD -MP
+CFLAGS      = -Wall -Wextra -Werror -I$(INC_DIR) -g -MMD -MP
 
 SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = includes
 
-SRC_FILES   = main.c init.c parsing.c
+SRC_FILES   = main.c init.c parsing.c utils.c
 SRCS        = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS        = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 DEPS        = $(OBJS:.o=.d)

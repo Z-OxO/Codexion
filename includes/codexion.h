@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 15:00:24 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/02 19:48:37 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../includes/parsing.h"
 # include <pthread.h>
 # include <stdlib.h>
+# include <sys/time.h>
 
 typedef struct s_sim	t_sim;
 
@@ -51,7 +52,7 @@ typedef struct s_sim
 
 	t_coder				*coders;
 	pthread_cond_t		*coder_wake;
-	int					*granted;
+	bool				*granted;
 
 	t_dongle			*dongles;
 
@@ -66,5 +67,8 @@ typedef struct s_sim
 // INIT.C
 int						clean_sim(t_sim *sim);
 int						init_sim(t_sim *sim, t_args *args);
+
+// UTILS.C
+unsigned long long	get_ms(unsigned long long sim_start);
 
 #endif

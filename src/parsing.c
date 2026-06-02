@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:04 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 16:56:02 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/02 19:41:04 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,16 @@ t_parsing_errors	parse_args(const int argc, const char **argv, t_args *args)
 	if (argc != 9)
 		return (INVALID_ARGUMENTS_NB);
 	converted_args = (unsigned long *)args;
-	i = -1;
+	i = 0;
+	argv++; // Skip program name
 	while (i < 7)
 	{
-		ret = string_to_ul(argv[i + 1], &converted_args[i]);
+		ret = string_to_ul(argv[i], &converted_args[i]);
 		if (ret != OK)
 			return (ret);
 		i++;
 	}
-	if (parse_scheduler(argv[8], args) != OK)
+	if (parse_scheduler(argv[7], args) != OK)
 		return (INVALID_SCHEDULER);
 	if (!is_possible_timings(args))
 		return (IMPOSSIBLE_TIMING);
