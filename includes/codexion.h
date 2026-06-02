@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 14:33:35 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/02 14:56:31 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_sim
 
 	t_coder				*coders;
 	pthread_cond_t		*coder_wake;
+	int					*granted;
 
 	t_dongle			*dongles;
 
