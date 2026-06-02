@@ -6,11 +6,11 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 19:43:45 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 15:00:34 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/02 15:39:31 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/codexion.h"
+#include "codexion.h"
 
 int	clean_sim(t_sim *sim)
 {
