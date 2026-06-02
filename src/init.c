@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 19:43:45 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 14:58:51 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/02 15:00:34 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	clean_sim(t_sim *sim)
 	unsigned int	i;
 
 	if (!sim)
-		return ;
+		return (1);
 	i = 0;
 	while (i < sim->args->nb_coders)
 	{

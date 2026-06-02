@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 14:56:31 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/02 15:00:24 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_sim
 }						t_sim;
 
 // INIT.C
-void					clean_sim(t_sim *sim);
+int						clean_sim(t_sim *sim);
 int						init_sim(t_sim *sim, t_args *args);
 
 #endif
