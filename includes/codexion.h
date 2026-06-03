@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/03 18:21:06 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/03 21:19:10 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 typedef struct s_sim	t_sim;
-typedef struct s_pqueue	t_pqueue;
 
-	typedef struct s_dongle
+typedef struct s_dongle
 {
 	bool				held;
 	unsigned long long	available;
@@ -43,6 +43,18 @@ typedef struct s_coder
 	unsigned long long	debug_start;
 
 }						t_coder;
+
+typedef struct s_node
+{
+	int					id;
+	unsigned long long	key;
+}						t_node;
+
+typedef struct s_pqueue
+{
+	t_node				*data;
+	int					size;
+}						t_pqueue;
 
 typedef struct s_sim
 {
@@ -74,17 +86,12 @@ int						init_sim(t_sim *sim, t_args *args);
 // UTILS.C
 unsigned long long		get_ms(unsigned long long sim_start);
 
-// HEAP.C
-typedef struct s_node
-{
-	int					id;
-	unsigned long long	key;
-}						t_node;
+// SCHEDULER.C
+void					*scheduler_routine(void *args);
 
-typedef struct s_pqueue
-{
-	t_node				*data;
-	int					size;
-}						t_pqueue;
+// CODER.C
+void					*coder_routine(void *args);
+
+// HEAP.C
 
 #endif
