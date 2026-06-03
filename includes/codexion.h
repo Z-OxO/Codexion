@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 19:48:37 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/03 17:07:30 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,20 @@ int						clean_sim(t_sim *sim);
 int						init_sim(t_sim *sim, t_args *args);
 
 // UTILS.C
-unsigned long long	get_ms(unsigned long long sim_start);
+unsigned long long		get_ms(unsigned long long sim_start);
+
+// HEAP.C
+
+typedef struct s_node
+{
+	int					id;
+	unsigned long long	key;
+}						t_node;
+
+typedef struct s_pqueue
+{
+	t_node				*data;
+	int					size;
+}						t_pqueue;
 
 #endif
