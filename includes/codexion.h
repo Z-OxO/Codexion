@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/03 17:07:30 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/03 18:21:06 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 # include <sys/time.h>
 
 typedef struct s_sim	t_sim;
+typedef struct s_pqueue	t_pqueue;
 
-typedef struct s_dongle
+	typedef struct s_dongle
 {
 	bool				held;
 	unsigned long long	available;
@@ -54,6 +55,8 @@ typedef struct s_sim
 	pthread_cond_t		*coder_wake;
 	bool				*granted;
 
+	t_pqueue			pq;
+
 	t_dongle			*dongles;
 
 	pthread_mutex_t		lock;
@@ -72,7 +75,6 @@ int						init_sim(t_sim *sim, t_args *args);
 unsigned long long		get_ms(unsigned long long sim_start);
 
 // HEAP.C
-
 typedef struct s_node
 {
 	int					id;
