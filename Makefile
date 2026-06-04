@@ -7,7 +7,7 @@ SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = includes
 
-SRC_FILES   = main.c init.c parsing.c utils.c
+SRC_FILES   = main.c init.c parsing.c utils.c scheduler.c coder.c heap.c
 SRCS        = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS        = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 DEPS        = $(OBJS:.o=.d)
