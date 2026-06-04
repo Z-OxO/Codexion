@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 19:43:45 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/04 14:50:58 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/04 19:34:12 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	clean_sim(t_sim *sim)
 	free(sim->coders);
 	free(sim->coder_wake);
 	free(sim->dongles);
+	free(sim->granted);
+	free(sim->pq.data);
 	return (1);
 }
 
@@ -59,6 +61,7 @@ int	init_sim(t_sim *sim, t_args *args)
 
 	if (!sim || !args)
 		return (1);
+	memset(sim, 0, sizeof(t_sim));
 	sim->args = args;
 	if (!allocate_arrays(sim))
 		return (clean_sim(sim));
