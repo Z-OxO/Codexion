@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 02:20:56 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/03 21:34:44 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/04 17:08:47 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ int	main(int argc, const char **argv)
 	sim.sim_start = get_ms(0);
 	pthread_join(tid_coder, NULL);
 	pthread_join(tid_scheduler, NULL);
+	clean_sim(&sim);
 	return (OK);
 }
