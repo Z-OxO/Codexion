@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/03 21:19:10 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/04 16:31:38 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_lease
 typedef struct s_coder
 {
 	t_sim				*sim;
+	bool				need_lease;
 	unsigned int		id;
 	unsigned int		compile_count;
 	unsigned long long	last_compile_start;
@@ -72,7 +73,7 @@ typedef struct s_sim
 	t_dongle			*dongles;
 
 	pthread_mutex_t		lock;
-	pthread_mutex_t log_mutex; // USE WRITE ?
+	pthread_mutex_t		log_mutex;
 
 	pthread_cond_t		sched_wake;
 	pthread_cond_t		mon_cond;
@@ -85,7 +86,7 @@ int						init_sim(t_sim *sim, t_args *args);
 
 // UTILS.C
 unsigned long long		get_ms(unsigned long long sim_start);
-
+void					log_state(t_sim *sim, int coder_id, const char *msg);
 // SCHEDULER.C
 void					*scheduler_routine(void *args);
 
