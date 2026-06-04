@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 19:43:45 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/03 20:41:23 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/04 14:50:58 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	clean_sim(t_sim *sim)
 	return (1);
 }
 
+// Simplify init_sim condition | 0 error 1 succes
 static int	allocate_arrays(t_sim *sim)
 {
 	sim->coders = malloc(sizeof(t_coder) * sim->args->nb_coders);
@@ -43,7 +44,7 @@ static int	allocate_arrays(t_sim *sim)
 	sim->pq.data = malloc(sizeof(t_node) * sim->args->nb_coders);
 	if (!sim->coders || !sim->coder_wake || !sim->dongles || !sim->granted
 		|| !sim->pq.data)
-		return (0); // Simplify init_sim condition | 0 error 1 succes
+		return (0);
 	memset(sim->coders, 0, sizeof(t_coder) * sim->args->nb_coders);
 	memset(sim->dongles, 0, sizeof(t_dongle) * sim->args->nb_coders);
 	memset(sim->granted, 0, sizeof(int) * sim->args->nb_coders);

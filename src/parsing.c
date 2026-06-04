@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:04 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 19:41:04 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/04 14:51:07 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ static bool	is_possible_timings(const t_args *args)
 int	print_error(t_parsing_errors err)
 {
 	static const char	*msg[] = {"",
-			"Error: Internal NULL pointer detected.\n",
-			"Parsing Error: Invalid number of arguments.\n",
-			"Parsing Error: Invalid number of coder (at least 2).\n",
-			"Parsing Error: Scheduler must be 'fifo' or 'edf'.\n",
-			"Parsing Error: Empty argument provided.\n",
-			"Parsing Error: Arguments must strictly be numeric.\n",
-			"Parsing Error: Negative numbers are not allowed.\n",
-			"Parsing Error: Integer overflow detected.\n",
-			"Parsing Error: Impossible timing parameters provided.\n"};
+		"Error: Internal NULL pointer detected.\n",
+		"Parsing Error: Invalid number of arguments.\n",
+		"Parsing Error: Invalid number of coder (at least 2).\n",
+		"Parsing Error: Scheduler must be 'fifo' or 'edf'.\n",
+		"Parsing Error: Empty argument provided.\n",
+		"Parsing Error: Arguments must strictly be numeric.\n",
+		"Parsing Error: Negative numbers are not allowed.\n",
+		"Parsing Error: Integer overflow detected.\n",
+		"Parsing Error: Impossible timing parameters provided.\n"};
 
 	if (err > OK && err <= IMPOSSIBLE_TIMING)
 		write(2, msg[err], strlen(msg[err]));
@@ -88,7 +88,7 @@ t_parsing_errors	parse_args(const int argc, const char **argv, t_args *args)
 		return (INVALID_ARGUMENTS_NB);
 	converted_args = (unsigned long *)args;
 	i = 0;
-	argv++; // Skip program name
+	argv++;
 	while (i < 7)
 	{
 		ret = string_to_ul(argv[i], &converted_args[i]);

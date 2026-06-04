@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:13:25 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/03 19:38:57 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/04 14:52:07 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	pq_push(t_pqueue *pq, int id, unsigned long long key)
 {
 	t_node	target;
 	int		parent;
-	int		i; 
+	int		i;
 
 	target = (t_node){id, key};
 	i = pq->size;

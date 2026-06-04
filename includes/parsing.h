@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:15 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/02 16:51:57 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/04 14:52:16 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef enum e_parsing_errors
 	// DEV
 	OK,
 	NULL_PTR,
-
 	// USER ERROR MESSAGE
 	INVALID_ARGUMENTS_NB,
 	INVALID_CODERS_NB,
