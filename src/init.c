@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 19:43:45 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/04 19:34:12 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/08 15:42:54 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	clean_sim(t_sim *sim)
 	pthread_mutex_destroy(&sim->lock);
 	pthread_mutex_destroy(&sim->log_mutex);
 	pthread_cond_destroy(&sim->sched_wake);
+	pthread_cond_destroy(&sim->mon_cond);
+	free(sim->coders);
 	free(sim->coders);
 	free(sim->coder_wake);
 	free(sim->dongles);
