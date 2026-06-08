@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/04 16:31:38 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/05 18:17:39 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ int						init_sim(t_sim *sim, t_args *args);
 
 // UTILS.C
 unsigned long long		get_ms(unsigned long long sim_start);
-void					log_state(t_sim *sim, int coder_id, const char *msg);
+void					log_state(t_sim *sim, unsigned long long sim_start,
+							int coder_id, const char *msg);
+
 // SCHEDULER.C
 void					*scheduler_routine(void *args);
 
