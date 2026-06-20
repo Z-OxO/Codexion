@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:13:25 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/04 14:52:07 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/20 18:47:52 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,11 @@ void	pq_pop(t_pqueue *pq)
 		i = best;
 	}
 	pq->data[i] = target;
+}
+
+t_node	*pq_peek(t_pqueue *pq)
+{
+	if (!pq->data)
+		return (NULL);
+	return (&pq->data[0]);
 }

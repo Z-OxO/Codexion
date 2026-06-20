@@ -1,13 +1,13 @@
 NAME        = codexion
 
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror -I$(INC_DIR) -g -MMD -MP
+CFLAGS      = -Wall -Wextra -Werror -pthread -I$(INC_DIR) -MMD -MP
 
 SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = includes
 
-SRC_FILES   = main.c init.c parsing.c utils.c scheduler.c coder.c heap.c
+SRC_FILES   = main.c init.c parsing.c utils.c scheduler.c coder.c heap.c monitor.c
 SRCS        = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS        = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 DEPS        = $(OBJS:.o=.d)
@@ -32,6 +32,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 -include $(DEPS)
+
+check: $(NAME)
+	valgrind --tool=helgrind ./$(NAME) 2 200 20 20 20 20 20 fifo
 
 clean:
 	@$(RM) $(OBJ_DIR)
