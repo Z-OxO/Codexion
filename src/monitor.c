@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:47:56 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/20 18:53:27 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ static void	stop_simulation(t_sim *sim, int coder_id, int burned)
 {
 	unsigned int	i;
 
+	pthread_mutex_lock(&sim->log_mutex);
 	if (burned)
-		log_state(sim, coder_id, "burned out");
+		printf("%llu %d burned out\n", get_ms(sim->sim_start), coder_id);
 	sim->stop = 1;
+	pthread_mutex_unlock(&sim->log_mutex);
 	pthread_cond_broadcast(&sim->sched_wake);
 	i = 0;
 	while (i < sim->args->nb_coders)

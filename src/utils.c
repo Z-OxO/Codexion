@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 19:09:38 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:48:01 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/20 18:53:01 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	log_state(t_sim *sim, int coder_id, const char *msg)
 
 	curr_time = get_ms(sim->sim_start);
 	pthread_mutex_lock(&sim->log_mutex);
-	printf("%llu %d %s\n", curr_time, coder_id, msg);
+	if (!sim->stop)
+		printf("%llu %d %s\n", curr_time, coder_id, msg);
 	pthread_mutex_unlock(&sim->log_mutex);
 }
 
