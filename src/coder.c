@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:47:51 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/24 20:38:58 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	do_compile(t_sim *sim, t_coder *coder)
 	usleep(sim->args->time_to_compile * 1000);
 	pthread_mutex_lock(&sim->lock);
 	coder->compile_count++;
+	coder->last_compile_start = get_ms(sim->sim_start);
 	pthread_cond_signal(&sim->mon_cond);
 	pthread_mutex_unlock(&sim->lock);
 }
@@ -57,8 +58,6 @@ void	wait_for_dongles(t_sim *sim, t_coder *coder)
 		return ;
 	}
 	sim->granted[coder->id] = 0;
-	coder->last_compile_start = get_ms(sim->sim_start);
-	pthread_cond_signal(&sim->mon_cond);
 	pthread_mutex_unlock(&sim->lock);
 	do_compile(sim, coder);
 }

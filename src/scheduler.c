@@ -6,70 +6,106 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:47:58 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/24 20:10:07 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static int	try_grant_head(t_sim *sim)
+static int	grantable(t_sim *s, int id)
 {
-	t_node				*lease;
-	int					id;
-	int					r_id;
+	int					r;
 	unsigned long long	now;
-	unsigned long long	busy;
 
-	lease = pq_peek(&sim->pq);
-	id = lease->id;
-	r_id = (id + 1) % sim->args->nb_coders;
-	now = get_ms(sim->sim_start);
-	if (now < sim->dongles[id].available || now < sim->dongles[r_id].available)
+	r = (id + 1) % s->args->nb_coders;
+	now = get_ms(s->sim_start);
+	if (now < s->dongles[id].available)
 		return (0);
-	busy = now + sim->args->time_to_compile + sim->args->dongle_cooldown;
-	sim->dongles[id].available = busy;
-	sim->dongles[r_id].available = busy;
-	sim->granted[id] = 1;
-	pq_pop(&sim->pq);
-	pthread_cond_signal(&sim->coder_wake[id]);
+	if (now < s->dongles[r].available)
+		return (0);
 	return (1);
 }
 
-static void	wait_until_ready(t_sim *sim)
+static void	grant(t_sim *s, int id)
 {
-	t_node				*lease;
-	int					r_id;
-	unsigned long long	target;
-	unsigned long long	abs_ms;
+	int					r;
+	unsigned long long	busy;
+
+	r = (id + 1) % s->args->nb_coders;
+	busy = get_ms(s->sim_start) + s->args->time_to_compile
+		+ s->args->dongle_cooldown;
+	s->dongles[id].available = busy;
+	s->dongles[r].available = busy;
+	s->granted[id] = 1;
+	pthread_cond_signal(&s->coder_wake[id]);
+}
+
+static void	schedule_pass(t_sim *s)
+{
+	int		ndef;
+	t_node	node;
+
+	ndef = 0;
+	while (s->pq.size > 0)
+	{
+		node = *pq_peek(&s->pq);
+		pq_pop(&s->pq);
+		if (grantable(s, node.id))
+			grant(s, node.id);
+		else
+			s->backfill[ndef++] = node;
+	}
+	while (ndef > 0)
+	{
+		ndef--;
+		pq_push(&s->pq, s->backfill[ndef].id, s->backfill[ndef].key);
+	}
+}
+
+static void	sched_sleep(t_sim *s)
+{
+	int					i;
+	int					r;
+	unsigned long long	ready;
+	unsigned long long	best;
 	struct timespec		ts;
 
-	lease = pq_peek(&sim->pq);
-	r_id = (lease->id + 1) % sim->args->nb_coders;
-	target = sim->dongles[lease->id].available;
-	if (sim->dongles[r_id].available > target)
-		target = sim->dongles[r_id].available;
-	abs_ms = sim->sim_start + target;
-	ts = ms_to_ts(abs_ms);
-	pthread_cond_timedwait(&sim->sched_wake, &sim->lock, &ts);
+	best = (unsigned long long)-1;
+	i = 0;
+	while (i < s->pq.size)
+	{
+		r = (s->pq.data[i].id + 1) % s->args->nb_coders;
+		ready = s->dongles[s->pq.data[i].id].available;
+		if (s->dongles[r].available > ready)
+			ready = s->dongles[r].available;
+		if (ready < best)
+			best = ready;
+		i++;
+	}
+	ts = ms_to_ts(s->sim_start + best);
+	pthread_cond_timedwait(&s->sched_wake, &s->lock, &ts);
 }
+
 
 void	*scheduler_routine(void *args)
 {
-	t_sim	*sim;
+	t_sim	*s;
 
-	sim = (t_sim *)args;
-	if (!sim)
-		return (NULL);
-	pthread_mutex_lock(&sim->lock);
-	while (!sim->started)
-		pthread_cond_wait(&sim->start_cond, &sim->lock);
-	while (!sim->stop)
+	s = (t_sim *)args;
+	pthread_mutex_lock(&s->lock);
+	while (!s->started)
+		pthread_cond_wait(&s->start_cond, &s->lock);
+	while (!s->stop)
 	{
-		if (sim->pq.size == 0)
-			pthread_cond_wait(&sim->sched_wake, &sim->lock);
-		else if (!try_grant_head(sim))
-			wait_until_ready(sim);
+		if (s->pq.size == 0)
+			pthread_cond_wait(&s->sched_wake, &s->lock);
+		else
+		{
+			schedule_pass(s);
+			if (s->pq.size > 0)
+				sched_sleep(s);
+		}
 	}
-	pthread_mutex_unlock(&sim->lock);
+	pthread_mutex_unlock(&s->lock);
 	return (NULL);
 }

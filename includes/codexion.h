@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:48:02 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/22 20:53:29 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_sim
 	bool				*granted;
 
 	t_pqueue			pq;
+	t_node				*backfill;
 
 	t_dongle			*dongles;
 

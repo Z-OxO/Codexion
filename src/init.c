@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 19:43:45 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/09 15:12:59 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/22 20:54:34 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	clean_sim(t_sim *sim)
 	free(sim->dongles);
 	free(sim->granted);
 	free(sim->pq.data);
+	free(sim->backfill);
 	return (1);
 }
 
@@ -46,8 +47,9 @@ static int	allocate_arrays(t_sim *sim)
 	sim->dongles = ft_calloc(sim->args->nb_coders, sizeof(t_dongle));
 	sim->granted = ft_calloc(sim->args->nb_coders, sizeof(bool));
 	sim->pq.data = ft_calloc(sim->args->nb_coders, sizeof(t_node));
+	sim->backfill = ft_calloc(sim->args->nb_coders, sizeof(t_node));
 	if (!sim->coders || !sim->coder_wake || !sim->dongles || !sim->granted
-		|| !sim->pq.data)
+		|| !sim->pq.data || !sim->backfill)
 		return (0);
 	sim->pq.size = 0;
 	return (1);
