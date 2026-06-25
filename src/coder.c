@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/25 04:34:29 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/25 04:53:58 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	*coder_routine(void *args)
 {
 	t_coder	*coder;
 	t_sim	*sim;
+	bool	stop_coder;
 
 	coder = (t_coder *)args;
 	sim = coder->sim;
@@ -72,10 +73,13 @@ void	*coder_routine(void *args)
 	while (!sim->started)
 		pthread_cond_wait(&sim->start_cond, &sim->lock);
 	pthread_mutex_unlock(&sim->lock);
-	while (!sim->stop)
+	while (1)
 	{
 		wait_for_dongles(sim, coder);
-		if (sim->stop)
+		pthread_mutex_lock(&sim->lock);
+		stop_coder = sim->stop;
+		pthread_mutex_unlock(&sim->lock);
+		if (stop_coder)
 			break ;
 		release_dongles(sim, coder);
 		log_state(sim, coder->id + 1, "is debugging");
