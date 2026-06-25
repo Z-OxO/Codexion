@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 02:20:56 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:47:54 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/25 04:32:36 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static int	launch_threads(t_sim *sim, pthread_t *tids)
 		pthread_create(&tids[i + 1], NULL, &coder_routine, &sim->coders[i]);
 		i++;
 	}
-	pthread_create(&tids[sim->args->nb_coders + 1], NULL, &monitor_routine,
-		sim);
+	pthread_create(&tids[sim->args->nb_coders + 1], NULL,
+		(void *(*)(void *))monitor_routine, sim);
 	pthread_mutex_lock(&sim->lock);
 	sim->sim_start = get_ms(0);
 	sim->started = 1;

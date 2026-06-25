@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/24 20:10:07 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/25 04:32:05 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ static int	grantable(t_sim *s, int id)
 static void	grant(t_sim *s, int id)
 {
 	int					r;
-	unsigned long long	busy;
+	unsigned long long	now;
 
 	r = (id + 1) % s->args->nb_coders;
-	busy = get_ms(s->sim_start) + s->args->time_to_compile
+	now = get_ms(s->sim_start);
+	s->dongles[id].available = now + s->args->time_to_compile
 		+ s->args->dongle_cooldown;
-	s->dongles[id].available = busy;
-	s->dongles[r].available = busy;
+	s->dongles[r].available = s->dongles[id].available;
+	s->coders[id].last_compile_start = now;
 	s->granted[id] = 1;
 	pthread_cond_signal(&s->coder_wake[id]);
 }
@@ -85,7 +86,6 @@ static void	sched_sleep(t_sim *s)
 	ts = ms_to_ts(s->sim_start + best);
 	pthread_cond_timedwait(&s->sched_wake, &s->lock, &ts);
 }
-
 
 void	*scheduler_routine(void *args)
 {

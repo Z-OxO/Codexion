@@ -6,12 +6,11 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:53:27 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/25 04:29:23 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <errno.h>
 
 static unsigned long long	next_deadline(t_sim *sim, unsigned int *who)
 {
@@ -66,14 +65,12 @@ static void	stop_simulation(t_sim *sim, int coder_id, int burned)
 	}
 }
 
-void	*monitor_routine(void *arg)
+void	*monitor_routine(t_sim *sim)
 {
-	t_sim				*sim;
 	unsigned int		who;
 	unsigned long long	deadline;
 	struct timespec		ts;
 
-	sim = (t_sim *)arg;
 	who = 0;
 	pthread_mutex_lock(&sim->lock);
 	while (!sim->started)
@@ -87,8 +84,9 @@ void	*monitor_routine(void *arg)
 		}
 		deadline = next_deadline(sim, &who);
 		ts = ms_to_ts(sim->sim_start + deadline);
-		if (pthread_cond_timedwait(&sim->mon_cond, &sim->lock, &ts) == ETIMEDOUT
-			&& get_ms(sim->sim_start) >= deadline)
+		pthread_cond_timedwait(&sim->mon_cond, &sim->lock, &ts);
+		deadline = next_deadline(sim, &who);
+		if (get_ms(sim->sim_start) >= deadline)
 			stop_simulation(sim, who + 1, 1);
 	}
 	pthread_mutex_unlock(&sim->lock);

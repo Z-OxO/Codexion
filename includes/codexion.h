@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/22 20:53:29 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/06/25 04:32:57 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ struct timespec			ms_to_ts(unsigned long long ms);
 void					*scheduler_routine(void *args);
 
 // MONITOR.C
-void					*monitor_routine(void *arg);
+void					*monitor_routine(t_sim *sim);
 
 // CODER.C
 void					*coder_routine(void *args);
