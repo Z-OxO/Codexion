@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/25 04:53:58 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/09 20:36:24 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	release_dongles(t_sim *sim, t_coder *coder)
 	avail = get_ms(sim->sim_start) + sim->args->dongle_cooldown;
 	sim->dongles[l_dongle].available = avail;
 	sim->dongles[r_dongle].available = avail;
-	pthread_cond_signal(&sim->sched_wake);
+	pthread_cond_broadcast(&sim->sched_wake);
 	pthread_mutex_unlock(&sim->lock);
 }
 
@@ -36,7 +36,7 @@ static void	do_compile(t_sim *sim, t_coder *coder)
 	usleep(sim->args->time_to_compile * 1000);
 	pthread_mutex_lock(&sim->lock);
 	coder->compile_count++;
-	pthread_cond_signal(&sim->mon_cond);
+	pthread_cond_broadcast(&sim->mon_cond);
 	pthread_mutex_unlock(&sim->lock);
 }
 
@@ -48,7 +48,7 @@ void	wait_for_dongles(t_sim *sim, t_coder *coder)
 	else
 		pq_push(&sim->pq, coder->id, coder->last_compile_start
 			+ sim->args->time_to_burnout);
-	pthread_cond_signal(&sim->sched_wake);
+	pthread_cond_broadcast(&sim->sched_wake);
 	while (!sim->granted[coder->id] && !sim->stop)
 		pthread_cond_wait(&sim->coder_wake[coder->id], &sim->lock);
 	if (sim->stop)

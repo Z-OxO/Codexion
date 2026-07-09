@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/25 04:32:05 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/09 20:36:24 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	grant(t_sim *s, int id)
 	s->dongles[r].available = s->dongles[id].available;
 	s->coders[id].last_compile_start = now;
 	s->granted[id] = 1;
-	pthread_cond_signal(&s->coder_wake[id]);
+	pthread_cond_broadcast(&s->coder_wake[id]);
 }
 
 static void	schedule_pass(t_sim *s)
