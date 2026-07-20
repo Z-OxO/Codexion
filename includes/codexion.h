@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 16:53:21 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/25 04:32:57 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/20 10:02:43 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ unsigned long long		get_ms(unsigned long long sim_start);
 void					*ft_calloc(size_t count, size_t size);
 void					log_state(t_sim *sim, int coder_id, const char *msg);
 struct timespec			ms_to_ts(unsigned long long ms);
+void					wait_start(t_sim *sim);
 
 // SCHEDULER.C
 void					*scheduler_routine(void *args);

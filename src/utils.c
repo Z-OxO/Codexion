@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 19:09:38 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/20 18:53:01 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/20 10:00:48 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,9 @@ void	*ft_calloc(size_t count, size_t size)
 
 void	log_state(t_sim *sim, int coder_id, const char *msg)
 {
-	unsigned long long	curr_time;
-
-	curr_time = get_ms(sim->sim_start);
 	pthread_mutex_lock(&sim->log_mutex);
 	if (!sim->stop)
-		printf("%llu %d %s\n", curr_time, coder_id, msg);
+		printf("%llu %d %s\n", get_ms(sim->sim_start), coder_id, msg);
 	pthread_mutex_unlock(&sim->log_mutex);
 }
 
@@ -51,4 +48,12 @@ struct timespec	ms_to_ts(unsigned long long ms)
 	ts.tv_sec = ms / 1000;
 	ts.tv_nsec = (ms % 1000) * 1000000;
 	return (ts);
+}
+
+void	wait_start(t_sim *sim)
+{
+	pthread_mutex_lock(&sim->lock);
+	while (!sim->started)
+		pthread_cond_wait(&sim->start_cond, &sim->lock);
+	pthread_mutex_unlock(&sim->lock);
 }

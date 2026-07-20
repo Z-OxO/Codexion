@@ -2,7 +2,6 @@ NAME        = codexion
 
 CC          = cc
 CFLAGS      = -Wall -Wextra -Werror -pthread -I$(INC_DIR) -MMD -MP
-
 SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = includes

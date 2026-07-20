@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:15 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/04 14:52:16 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/20 16:36:21 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <limits.h>
 # include <stdbool.h>
-# include <unistd.h>
 # include <stdio.h>
 # include <string.h>
+# include <unistd.h>
 
 typedef enum e_scheduler_type
 {
@@ -32,13 +32,11 @@ typedef enum e_parsing_errors
 	NULL_PTR,
 	// USER ERROR MESSAGE
 	INVALID_ARGUMENTS_NB,
-	INVALID_CODERS_NB,
 	INVALID_SCHEDULER,
 	EMPTY_ARGS_VALUE,
 	NOT_NUMERIC,
 	NEGATIVE_NB,
 	INTEGER_OVERFLOW,
-	IMPOSSIBLE_TIMING,
 }						t_parsing_errors;
 
 typedef struct s_args

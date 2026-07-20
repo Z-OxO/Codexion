@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:41:22 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/07/09 20:36:24 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/20 10:00:12 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,16 @@ void	wait_for_dongles(t_sim *sim, t_coder *coder)
 	do_compile(sim, coder);
 }
 
+static void	*single_coder(t_sim *sim, t_coder *coder)
+{
+	log_state(sim, coder->id + 1, "has taken a dongle");
+	pthread_mutex_lock(&sim->lock);
+	while (!sim->stop)
+		pthread_cond_wait(&sim->coder_wake[coder->id], &sim->lock);
+	pthread_mutex_unlock(&sim->lock);
+	return (NULL);
+}
+
 void	*coder_routine(void *args)
 {
 	t_coder	*coder;
@@ -69,10 +79,9 @@ void	*coder_routine(void *args)
 
 	coder = (t_coder *)args;
 	sim = coder->sim;
-	pthread_mutex_lock(&sim->lock);
-	while (!sim->started)
-		pthread_cond_wait(&sim->start_cond, &sim->lock);
-	pthread_mutex_unlock(&sim->lock);
+	wait_start(sim);
+	if (sim->args->nb_coders == 1)
+		return (single_coder(sim, coder));
 	while (1)
 	{
 		wait_for_dongles(sim, coder);

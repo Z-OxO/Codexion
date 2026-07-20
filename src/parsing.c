@@ -6,36 +6,24 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:04 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/06/25 04:44:48 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/20 10:01:53 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-static bool	is_possible_timings(const t_args *args)
-{
-	if (args->time_to_compile + args->time_to_debug
-		+ args->time_to_refactor >= args->time_to_burnout)
-		return (false);
-	if (args->dongle_cooldown >= args->time_to_burnout)
-		return (false);
-	return (true);
-}
 
 int	print_error(t_parsing_errors err)
 {
 	static const char	*msg[] = {"",
 		"Error: Internal NULL pointer detected.\n",
 		"Parsing Error: Invalid number of arguments.\n",
-		"Parsing Error: Invalid number of coder (at least 2).\n",
 		"Parsing Error: Scheduler must be 'fifo' or 'edf'.\n",
 		"Parsing Error: Empty argument provided.\n",
 		"Parsing Error: Arguments must strictly be numeric.\n",
 		"Parsing Error: Negative numbers are not allowed.\n",
-		"Parsing Error: Integer overflow detected.\n",
-		"Parsing Error: Impossible timing parameters provided.\n"};
+		"Parsing Error: Integer overflow detected.\n"};
 
-	if (err > OK && err <= IMPOSSIBLE_TIMING)
+	if (err > OK && err <= INTEGER_OVERFLOW)
 		write(2, msg[err], strlen(msg[err]));
 	return (1);
 }
@@ -98,9 +86,5 @@ t_parsing_errors	parse_args(const int argc, const char **argv, t_args *args)
 	}
 	if (parse_scheduler(argv[7], args) != OK)
 		return (INVALID_SCHEDULER);
-	if (!is_possible_timings(args))
-		return (IMPOSSIBLE_TIMING);
-	if (args->nb_coders < 2)
-		return (INVALID_CODERS_NB);
 	return (OK);
 }
