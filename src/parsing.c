@@ -6,7 +6,7 @@
 /*   By: jbenhass <jbenhass@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/28 21:02:04 by jbenhass          #+#    #+#             */
-/*   Updated: 2026/07/20 10:01:53 by jbenhass         ###   ########lyon.fr   */
+/*   Updated: 2026/07/22 20:03:10 by jbenhass         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ int	print_error(t_parsing_errors err)
 	return (1);
 }
 
+static int	is_numeric(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static t_parsing_errors	string_to_ul(const char *str, unsigned long *ret_ptr)
 {
 	int					i;
@@ -41,16 +55,15 @@ static t_parsing_errors	string_to_ul(const char *str, unsigned long *ret_ptr)
 		return (EMPTY_ARGS_VALUE);
 	if (str[0] == '-')
 		return (NEGATIVE_NB);
+	if (!is_numeric(str))
+		return (NOT_NUMERIC);
 	while (str[i])
 	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			return (NOT_NUMERIC);
-		nb *= 10;
-		nb += str[i] - '0';
+		nb = nb * 10 + (str[i] - '0');
+		if (nb > INT_MAX)
+			return (INTEGER_OVERFLOW);
 		i++;
 	}
-	if (nb > INT_MAX || i > 10)
-		return (INTEGER_OVERFLOW);
 	*ret_ptr = nb;
 	return (OK);
 }
